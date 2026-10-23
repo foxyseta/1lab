@@ -4,6 +4,8 @@ description: |
 ---
 <!--
 ```agda
+open import 1Lab.Counterexamples.HLevel.Universe
+
 open import Cat.Functor.FullSubcategory
 open import Cat.Functor.Adjoint.Monad
 open import Cat.Diagram.Monad.Solver
@@ -183,7 +185,8 @@ Kleisli-not-univalent {κ} =
 
     not-univalent : ¬ is-category (Kleisli-maps T)
     not-univalent cat =
-      ¬Set-is-prop $
+      ¬Set-is-set $
+      is-prop→is-set $
       identity-system→hlevel 0 cat $ λ X Y →
         ≅-is-contr (hlevel 0)
 ```

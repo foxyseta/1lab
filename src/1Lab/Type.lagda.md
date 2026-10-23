@@ -49,7 +49,7 @@ _ : ∀ {ℓ ℓ'} (A : Type ℓ) → (A → Type ℓ') → Type (ℓ ⊔ ℓ')
 _ = λ A B → ((x : A) → B x)
 ```
 
-## Lifting
+## Lifting {defines="type-lifting"}
 
 We have mentioned that every fibrant type lives in exactly one universe.
 This is to say that our universes are not **cumulative**. Instead, we

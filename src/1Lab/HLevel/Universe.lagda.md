@@ -25,7 +25,7 @@ private variable
 ```
 -->
 
-# Universes of n-types
+# Universes of n-types {defines="universes-of-n-types"}
 
 A common phenomenon in higher category theory is that the collection of
 all $n$-categories in a given universe $\ell$ assembles into an
@@ -200,14 +200,15 @@ Prop : ∀ ℓ → Type (lsuc ℓ)
 Prop ℓ = n-Type ℓ 1
 ```
 
-<!--
+Since lifting preserves homotopy levels by `Lift-is-hlevel`{.Agda}, it
+restricts to a function between matching homotopy levels in different
+type universes.
+
 ```agda
-¬Set-is-prop : ¬ is-prop (Set ℓ)
-¬Set-is-prop prop =
-  lower $
-  transport (ap ∣_∣ (prop (el (Lift _ ⊤) (hlevel 2)) (el (Lift _ ⊥) (hlevel 2)))) (lift tt)
+n-Lift : ∀ {a} n ℓ (A : n-Type a n) → n-Type (a ⊔ ℓ) n
+n-Lift n ℓ A .∣_∣ = Lift ℓ ∣ A ∣
+n-Lift n ℓ A .is-tr = Lift-is-hlevel n (A .is-tr)
 ```
--->
 
 <!--
 ```agda

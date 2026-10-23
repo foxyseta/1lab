@@ -301,5 +301,15 @@ Lift-is-embedding ℓ' = cancellable→embedding λ {x} {y} →
   Lift ℓ' x ≃ Lift ℓ' y ≃⟨ ≃-ap Lift-≃ Lift-≃ ⟩
   x ≃ y                 ≃⟨ _ , univalence⁻¹ ⟩
   x ≡ y                 ≃∎
+
+n-Lift-is-embedding : ∀ {ℓ} n ℓ' → is-embedding {A = n-Type ℓ n} (n-Lift n ℓ')
+n-Lift-is-embedding n ℓ' = cancellable→embedding λ {A} {B} →
+  n-Lift n ℓ' A ≡ n-Lift n ℓ' B ≃⟨ n-univalence e⁻¹ ⟩
+  Lift ℓ' ∣ A ∣ ≃ Lift ℓ' ∣ B ∣ ≃⟨ ≃-ap Lift-≃ Lift-≃ ⟩
+  ∣ A ∣ ≃ ∣ B ∣                 ≃⟨ n-univalence ⟩
+  A ≡ B                         ≃∎
+
+∣-∣-is-embedding : ∀ {ℓ n} → is-embedding {A = n-Type ℓ n} ∣_∣
+∣-∣-is-embedding = cancellable→embedding ((_ , univalence) ∙e n-univalence)
 ```
 -->
