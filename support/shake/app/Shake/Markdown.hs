@@ -87,7 +87,7 @@ buildMarkdown digest modname input output = do
       . Map.insert "link-citations" (MetaBool True)
       . unMeta
 
-  (markdown, references) <- traced "pandoc" do
+  (markdown@(Pandoc meta@(Meta metamap) blocks), references) <- traced "pandoc" do
     Pandoc meta markdown <- readLabMarkdown input
     let pandoc = addPageTitle (Pandoc (patchMeta meta) markdown)
     either (fail . show) pure =<< runIO do
@@ -111,10 +111,10 @@ buildMarkdown digest modname input output = do
   need diagrams
   prerenderMaths (toList display) (toList inline)
 
-  Pandoc meta@(Meta metamap) blocks <-
+  blocks <-
       walkM (patchInline refMap)
     . (if skipAgda then id else linkReferences modname)
-    $ markdown
+    $ blocks
 
   need [ if isJust (Map.lookup "talk" metamap) then talkTemplateName else pageTemplateName ]
 
@@ -165,7 +165,7 @@ findModule modname = do
 -- already been provided by the author.
 addPageTitle :: Pandoc -> Pandoc
 addPageTitle (Pandoc (Meta meta) m) = Pandoc (Meta meta') m where
-  search (Header 1 _ inl:_) = Just (MetaInlines inl)
+  search (Header 1 _ inl:_) = Just (MetaString (stringify inl))
   search (_:xs)             = search xs
   search []                 = Nothing
 

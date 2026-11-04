@@ -38,18 +38,24 @@ readLabMarkdown fp = liftIO cont where
   unParaMath (Para [Math DisplayMath m]) = Plain [Math DisplayMath m]
   unParaMath x = x
 
+  skipHeaders :: ([Inline] -> [Inline]) -> Block -> Block
+  skipHeaders f (Para is) = Para (walk f is)
+  skipHeaders f (Plain is) = Plain (walk f is)
+  skipHeaders f b = b
+
   cont :: IO Pandoc
   cont = {-# SCC "readLabMarkdown" #-} do
     contents <- mangleMarkdown <$> readFile fp
     evaluate $ rnf contents
     either (fail . show) pure =<< runIO do
       doc <- readMarkdown labReaderOptions [(fp, contents)]
-      pure $ walk unParaMath $ walk postParseInlines doc
+      pure $ walk unParaMath $ walk (skipHeaders postParseInlines) doc
 {-# NOINLINE readLabMarkdown #-}
 
 -- | Patch a sequence of inline elements. `patchInline' should be preferred
 -- where possible, this is only useful when you cannot modify inlines in
 -- isolation.
+-- Note that headers are skipped.
 postParseInlines :: [Inline] -> [Inline]
 
 -- Float text that occurs directly after a mathematics span *inside* the
@@ -114,7 +120,7 @@ postParseInlines (Link attr@(_id, cls, _attrs) content (url, title):xs)
     -- stripping formatting is the right thing, otherwise e.g. [[*path
     -- induction*]] would fail since the target "*path-induction*"
     -- doesn't exist.
-    pure (Link attr is (target, title))
+    pure (Link attr (walk postParseInlines is) (target, title))
 
 postParseInlines (x:xs) = x:postParseInlines xs
 postParseInlines [] = []

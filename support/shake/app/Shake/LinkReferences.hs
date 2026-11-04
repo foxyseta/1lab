@@ -15,8 +15,8 @@ import Text.Pandoc.Walk
 -- | Link inline code spans of the form `foo`{.Agda} to `foo` if it exists in
 -- the module's Agda blocks. If an identifier is explicitly specified with an
 -- attribute but doesn't exist, raise an error.
-linkReferences :: FilePath -> Pandoc -> Pandoc
-linkReferences modname (Pandoc meta blocks) = Pandoc meta (walk link blocks)
+linkReferences :: FilePath -> [Block] -> [Block]
+linkReferences modname blocks = walk link blocks
   where
     hm :: HashMap Text Reference
     hm = parseSymbolRefs blocks
