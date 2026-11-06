@@ -26,9 +26,9 @@ bound: the univalent universe of [[contractible]] types is itself
 contractible.
 
 ```agda
--2-Type-is--2-type : ∀ {ℓ} → is-contr (n-Type ℓ 0)
--2-Type-is--2-type .centre = el! (Lift _ ⊤)
--2-Type-is--2-type .paths = hlevel!
+Contr-is-contr : ∀ {ℓ} → is-contr (Contr ℓ)
+Contr-is-contr .centre = el! (Lift _ ⊤)
+Contr-is-contr .paths = hlevel!
 ```
 
 However, $-2$ is the only value of $n$ for which this holds. In general,
@@ -163,7 +163,7 @@ proposition. Thus, `id≃-loop`{.Agda} would have to coincide with `refl`{.Agda}
 This contradicts our observation above.
 
 ```agda
-  ¬Groupoid₀-is-groupoid : ¬ is-groupoid (n-Type lzero 3)
+  ¬Groupoid₀-is-groupoid : ¬ is-groupoid (Groupoid lzero)
   ¬Groupoid₀-is-groupoid Groupoid₀-is-groupoid =
     let
       S¹≃S¹-is-set = Equiv→is-hlevel 2 n-univalence $
@@ -176,7 +176,7 @@ We use the same argument as before to generalize to an arbitrary
 universe.
 
 ```agda
-¬Groupoid-is-groupoid : ∀ {ℓ} → ¬ is-groupoid (n-Type ℓ 3)
+¬Groupoid-is-groupoid : ∀ {ℓ} → ¬ is-groupoid (Groupoid ℓ)
 ¬Groupoid-is-groupoid = ¬Groupoid₀-is-groupoid ∘
   embedding→is-hlevel 2 (n-Lift-is-embedding 3 _)
 ```

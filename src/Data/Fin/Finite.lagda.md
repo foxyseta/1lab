@@ -332,7 +332,7 @@ record retract→listing {ℓ'} (A : Type ℓ) : Type (ℓ ⊔ lsuc ℓ') where
   no-eta-equality
   field
     univ   : List A
-    member : A → n-Type ℓ' 0
+    member : A → Contr ℓ'
 
     from  : ∀ {x} → x ∈ member → x ∈ₗ univ
     split : ∀ {x} (e : x ∈ₗ univ) → fibre from e

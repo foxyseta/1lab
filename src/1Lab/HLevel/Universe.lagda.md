@@ -189,15 +189,14 @@ abstract
     Equiv→is-hlevel (suc n) (n-univalence e⁻¹) (≃-is-hlevel (suc n) (x .is-tr) (y .is-tr))
 ```
 
-For 1-categorical mathematics, the important h-levels are the
-_propositions_ and the _sets_, so they get short names:
+We give the first four universes their usual names.
 
 ```agda
-Set : ∀ ℓ → Type (lsuc ℓ)
-Set ℓ = n-Type ℓ 2
-
-Prop : ∀ ℓ → Type (lsuc ℓ)
-Prop ℓ = n-Type ℓ 1
+Contr Prop Set Groupoid : ∀ ℓ → Type (lsuc ℓ)
+Contr ℓ    = n-Type ℓ 0
+Prop ℓ     = n-Type ℓ 1
+Set ℓ      = n-Type ℓ 2
+Groupoid ℓ = n-Type ℓ 3
 ```
 
 Since lifting preserves homotopy levels by `Lift-is-hlevel`{.Agda}, it
